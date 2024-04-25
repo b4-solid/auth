@@ -1,0 +1,7 @@
+services:
+  auth:
+    build: .
+    container_name: auth
+    ports:
+      - 8085:8085
+    restart: always
