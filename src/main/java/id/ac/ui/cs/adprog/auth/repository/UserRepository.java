@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import id.ac.ui.cs.adprog.auth.models.UserModel;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserModel, Long>{
+public interface UserRepository extends JpaRepository<UserModel, String>{
     // ini kosong karena inheritnya dari JpaRepository yang sudah ada method-methodnya
 }

@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
-import java.util.Date;
-
 @Setter
 @Getter
 @Entity
@@ -13,9 +11,7 @@ import java.util.Date;
 public class UserModel {
 
     @Id // tambahin ini kalo PK
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     @Column(name = "username")
-    @NotNull
     private String username;
 
     @Column(name = "passwordHash")
