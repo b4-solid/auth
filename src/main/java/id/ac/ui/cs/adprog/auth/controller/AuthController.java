@@ -24,16 +24,13 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody HashMap<String, String> credentials) {
-        HashMap<String, String> response = new HashMap<>();
-
         try {
             userService.addUser(credentials.get("username"), credentials.get("password"), credentials.get("repassword"));
         } catch (IllegalArgumentException e) {
-            response.put("reason", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
@@ -49,10 +46,9 @@ public class AuthController {
             response.put("username", user.get().getUsername());
             response.put("admin", user.get().isAdmin() ? "true" : "false");
         } else {
-            response.put("reason", "Incorrect username or password");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Incorrect username or password", HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
