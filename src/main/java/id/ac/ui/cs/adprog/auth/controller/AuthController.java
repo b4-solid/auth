@@ -3,6 +3,8 @@ package id.ac.ui.cs.adprog.auth.controller;
 import java.util.HashMap;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,22 +23,21 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public HashMap<String, String> register(@RequestBody HashMap<String, String> credentials) {
+    public ResponseEntity<Object> register(@RequestBody HashMap<String, String> credentials) {
         HashMap<String, String> response = new HashMap<>();
 
         try {
             userService.addUser(credentials.get("username"), credentials.get("password"), credentials.get("repassword"));
-            response.put("status", "success");
         } catch (IllegalArgumentException e) {
-            response.put("status", "failed");
             response.put("reason", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
-        return response;
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public HashMap<String, String> login(@RequestBody HashMap<String, String> credentials) {
+    public ResponseEntity<Object> login(@RequestBody HashMap<String, String> credentials) {
         String username = credentials.get("username");
         String password = credentials.get("password");
 
@@ -48,10 +49,10 @@ public class AuthController {
             response.put("username", user.get().getUsername());
             response.put("admin", user.get().isAdmin() ? "true" : "false");
         } else {
-            response.put("status", "failed");
             response.put("reason", "Incorrect username or password");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
-        return response;
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
