@@ -42,13 +42,12 @@ public class AuthController {
         HashMap<String, String> response = new HashMap<>();
 
         if (user.isPresent()) {
-            response.put("status", "success");
             response.put("username", user.get().getUsername());
             response.put("admin", user.get().isAdmin() ? "true" : "false");
         } else {
             return new ResponseEntity<>("Incorrect username or password", HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
